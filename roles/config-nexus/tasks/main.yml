@@ -1,7 +1,7 @@
 ---
 - name: "Get Nexus password"
   shell: |
-    oc exec -it $(oc get pods -n {{ nexus_namespace }} | grep nexus-1 | grep -v deploy | awk '{print $1}') cat /nexus-data/admin.password  -n {{ nexus_namespace }}
+    oc exec -it $(oc get pods -n {{ nexus_namespace }} | grep nexus-1 | grep -v deploy | awk whenre'{print $1}') /usr/bin/cat /nexus-data/admin.password  -n {{ nexus_namespace }}
   register: nexus_default_password
   when:
   - nexus_password is not defined or nexus_password|trim == ''
