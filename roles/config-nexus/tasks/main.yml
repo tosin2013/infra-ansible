@@ -3,14 +3,18 @@
   shell: |
     #!/bin/bash
     oc get pods -n {{ nexus_namespace }} | grep nexus-1 | grep -v deploy | awk '{print $1}'
-  register: nexus_podname.stdout
+  register: nexus_podname
   ignore_errors: false
   when:
   - nexus_password is not defined or nexus_password|trim == ''
 
+- name: display nexus pod name
+  debug:
+    msg: Generated {{ nexus_podname }}
+    
 - name: Getting nexus pod name
   set_fact:
-    nexus_pod: "{{ nexus_podname }}"
+    nexus_pod: "{{ nexus_podname.stdout }}"
   ignore_errors: false
   when:
   - nexus_password is not defined or nexus_password|trim == ''
