@@ -10,7 +10,7 @@
 
 - name: display nexus pod name
   debug:
-    msg: Generated {{ nexus_podname }}
+   var:  nexus_podname
     
 - name: Getting nexus pod name
   set_fact:
