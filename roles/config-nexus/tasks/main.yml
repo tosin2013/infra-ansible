@@ -4,7 +4,7 @@
     #!/bin/bash
     oc get pods -n {{ nexus_namespace }} | grep nexus-1 | grep -v deploy | awk '{print $1}'
   register: nexus_podname
-  ignore_error: false
+  ignore_errors: false
   when:
   - nexus_password is not defined or nexus_password|trim == ''
 
