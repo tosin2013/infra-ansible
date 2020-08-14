@@ -12,6 +12,10 @@
   when:
   - nexus_password is not defined or nexus_password|trim == ''
 
+- name: display nexus password
+  debug:
+    msg: Generated {{ nexus_password }}
+
 - name: "Look up Nexus URL"
   command: >
     oc get route {{ nexus_name | default('nexus') }} -n {{ nexus_namespace }} -o custom-columns=ROUTE:.spec.host --no-headers
