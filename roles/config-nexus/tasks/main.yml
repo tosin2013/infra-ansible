@@ -55,10 +55,18 @@
   when:
   - nexus_password is not defined or nexus_password|trim == ''
 
+- name: Copying over nexus.properties
+  template:
+    src: templates/nexus.properties.j2
+    dest:  "/tmp/nexus.properties"
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: 0666
+
 - name: "Set Nexus nexus.scripts.allowCreation=true"
   shell: |
     #!/bin/bash
-    oc exec -it {{ nexus_pod }} /usr/bin/echo 'nexus.scripts.allowCreation=true' >> /nexus-data/etc/nexus.properties  -n {{ nexus_namespace }}
+    oc cp /tmp/nexus.properties  {{ nexus_pod }}:/nexus-data/etc -n {{ nexus_namespace }}
   when:
   - nexus_password is not defined or nexus_password|trim == ''
 
@@ -78,7 +86,7 @@
   delay: 15
   args:
     executable: /bin/bash
-    
+
 - name: setting default nexus password 
   set_fact:
     nexus_password: "{{ nexus_default_password.stdout }}"
