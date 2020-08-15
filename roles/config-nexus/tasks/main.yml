@@ -1,9 +1,34 @@
 ---
+
+- name: Waiting for nexus build to complete
+  shell: |
+     set -o pipefail && oc get pods  | grep Completed | grep nexus | wc -l
+  register: install_status
+  until: "'2' in install_status.stdout"
+  retries: 120
+  delay: 15
+  args:
+    executable: /bin/bash
+
+- name: Waiting for nexus deployment
+  shell: |
+     set -o pipefail && oc get pods  | grep Running | grep nexus | wc -l
+  register: install_status
+  until: "'1' in install_status.stdout"
+  retries: 60
+  delay: 15
+  args:
+    executable: /bin/bash
+
 - name: "Get Nexus password"
-  shell: >
-    oc get pods --selector=name=nexus  -n {{ nexus_namespace }} -o=name
+  shell: |
+     set -o pipefail && oc get pods --selector=name=nexus  -n {{ nexus_namespace }} -o=name
   register: nexus_podname
-  ignore_errors: false
+  until: "'nexus' in nexus_podname.stdout"
+  retries: 60
+  delay: 15
+  args:
+    executable: /bin/bash
   when:
   - nexus_password is not defined or nexus_password|trim == ''
 
