@@ -38,7 +38,7 @@
     
 - name: Getting nexus pod name
   set_fact:
-    nexus_pod: "{{ nexus_podname.stdout }}"
+    nexus_pod: "{{ nexus_podname.stdout.split('/')[1] }}"
   ignore_errors: false
   when:
   - nexus_password is not defined or nexus_password|trim == ''
