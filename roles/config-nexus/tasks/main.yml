@@ -55,6 +55,30 @@
   when:
   - nexus_password is not defined or nexus_password|trim == ''
 
+- name: "Set Nexus nexus.scripts.allowCreation=true"
+  shell: |
+    #!/bin/bash
+    oc exec -it {{ nexus_pod }} /usr/bin/echo 'nexus.scripts.allowCreation=true' >> /nexus-data/etc/nexus.properties  -n {{ nexus_namespace }}
+  when:
+  - nexus_password is not defined or nexus_password|trim == ''
+
+- name: "Delete nexus pod"
+  shell: |
+    #!/bin/bash
+    oc delete pod{{ nexus_pod }} -n {{ nexus_namespace }}
+  when:
+  - nexus_password is not defined or nexus_password|trim == ''
+
+- name: Waiting for nexus deployment
+  shell: |
+     set -o pipefail && oc get pods -n {{ nexus_namespace }} | grep Running | grep nexus | wc -l
+  register: install_status
+  until: "'1' in install_status.stdout"
+  retries: 60
+  delay: 15
+  args:
+    executable: /bin/bash
+    
 - name: setting default nexus password 
   set_fact:
     nexus_password: "{{ nexus_default_password.stdout }}"
