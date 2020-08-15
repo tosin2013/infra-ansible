@@ -4,7 +4,7 @@
   shell: |
      set -o pipefail && oc get pods -n {{ nexus_namespace }} | grep Completed | grep nexus | wc -l
   register: install_status
-  until: "'2' in install_status.stdout"
+  until: "'1' in install_status.stdout"
   retries: 120
   delay: 15
   args:
