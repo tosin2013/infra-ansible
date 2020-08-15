@@ -2,7 +2,7 @@
 
 - name: Waiting for nexus build to complete
   shell: |
-     set -o pipefail && oc get pods  | grep Completed | grep nexus | wc -l
+     set -o pipefail && oc get pods -n {{ nexus_namespace }} | grep Completed | grep nexus | wc -l
   register: install_status
   until: "'2' in install_status.stdout"
   retries: 120
@@ -12,7 +12,7 @@
 
 - name: Waiting for nexus deployment
   shell: |
-     set -o pipefail && oc get pods  | grep Running | grep nexus | wc -l
+     set -o pipefail && oc get pods -n {{ nexus_namespace }} | grep Running | grep nexus | wc -l
   register: install_status
   until: "'1' in install_status.stdout"
   retries: 60
