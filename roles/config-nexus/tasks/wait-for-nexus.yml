@@ -6,7 +6,7 @@
     method: GET
     status_code: 200
     user: "{{ nexus_user }}"
-    password: "{{ nexus_password }}"
+    password: "{{ passed_nexus_password }}"
     force_basic_auth: yes
     validate_certs: "{{ nexus_validate_certs }}"
   register: nexus_server_check_result

@@ -5,7 +5,7 @@
     url: "https://{{ nexus_url }}{{ nexus_api_base_path }}/script/{{ item.script_name }}"
     method: GET
     user: "{{ nexus_user }}"
-    password: "{{ nexus_password }}"
+    password: "{{ passed_nexus_password }}"
     force_basic_auth: yes
     status_code: 200,404
     validate_certs: "{{ nexus_validate_certs }}"
@@ -16,7 +16,7 @@
     url: "https://{{ nexus_url }}{{ nexus_api_base_path }}/script/{{ item.script_name }}"
     method: DELETE
     user: "{{ nexus_user }}"
-    password: "{{ nexus_password }}"
+    password: "{{ passed_nexus_password }}"
     force_basic_auth: yes
     status_code: 204
     validate_certs: "{{ nexus_validate_certs }}"
@@ -27,7 +27,7 @@
     url: "https://{{ nexus_url }}{{ nexus_api_base_path }}/script/"
     method: POST
     user: "{{ nexus_user }}"
-    password: "{{ nexus_password }}"
+    password: "{{ passed_nexus_password }}"
     body_format: json
     body: "{{ lookup('file', item.script_file )}}"
     force_basic_auth: yes
@@ -39,7 +39,7 @@
     url: "https://{{ nexus_url }}{{ nexus_api_base_path }}/script/{{ item.script_name }}/run"
     method: POST
     user: "{{ nexus_user }}"
-    password: "{{ nexus_password }}"
+    password: "{{ passed_nexus_password }}"
     headers:
       Content-Type: "text/plain"
     force_basic_auth: yes
