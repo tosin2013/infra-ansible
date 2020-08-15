@@ -1,9 +1,7 @@
 ---
 - name: "Get Nexus password"
   shell: >
-    oc get pods -n {{ nexus_namespace }} |
-    grep nexus-1 | 
-    grep -v deploy
+    oc get pods --selector=name=nexus  -n {{ nexus_namespace }} -o=name
   register: nexus_podname
   ignore_errors: false
   when:
