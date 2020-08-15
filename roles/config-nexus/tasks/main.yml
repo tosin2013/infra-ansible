@@ -3,8 +3,7 @@
   shell: >
     oc get pods -n {{ nexus_namespace }} |
     grep nexus-1 | 
-    grep -v deploy | 
-    awk '{print $1}'
+    grep -v deploy
   register: nexus_podname
   ignore_errors: false
   when:
